@@ -241,6 +241,9 @@
             border-radius: 8px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            width: 100%;
+            max-width: 500px;
+            height: auto;
         }
 
         .about-image img:hover {
@@ -270,10 +273,18 @@
         .service-image {
             height: 250px;
             background-color: #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-color);
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.05);
         }
 
         .service-content {
@@ -314,13 +325,16 @@
             border-radius: 8px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            width: 100%;
+            max-width: 500px;
+            height: auto;
         }
 
         .text-image .image-content img:hover {
             transform: scale(1.02);
         }
 
-         /* Gallery Section - CSS actualizado */
+        /* Gallery Section - CSS SIMPLIFICADO Y CORREGIDO */
         .gallery {
             background-color: var(--light-color);
         }
@@ -340,38 +354,28 @@
 
         .carousel-track {
             display: flex;
-            transition: transform 0.5s ease;
+            transition: transform 0.5s ease-in-out;
+            width: 500%; /* 5 slides = 500% */
         }
 
         .carousel-slide {
-            min-width: 100%;
+            width: 20%; /* Cada slide ocupa 20% del ancho total (100%/5) */
+            flex-shrink: 0;
             position: relative;
         }
 
-        /* Añade esto al final de tu CSS, antes de los media queries */
-.carousel-image {
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
-    position: relative;
-}
+        .carousel-image {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+        }
 
-.carousel-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* Asegúrate de que las imágenes del carrusel no hereden estilos de service-image */
-.carousel .carousel-image {
-    background-color: transparent !important;
-    display: block !important;
-    align-items: normal !important;
-    justify-content: normal !important;
-    color: inherit !important;
-}
-
+        .carousel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
 
         .carousel-caption {
             position: absolute;
@@ -403,19 +407,20 @@
         }
 
         .carousel-btn.prev {
-            left: 0;
-            border-radius: 0 4px 4px 0;
+            left: 10px;
+            border-radius: 4px;
         }
 
         .carousel-btn.next {
-            right: 0;
-            border-radius: 4px 0 0 4px;
+            right: 10px;
+            border-radius: 4px;
         }
 
         .carousel-indicators {
             display: flex;
             justify-content: center;
             margin-top: 1rem;
+            gap: 8px;
         }
 
         .carousel-indicator {
@@ -423,14 +428,21 @@
             height: 12px;
             border-radius: 50%;
             background-color: #ccc;
-            margin: 0 5px;
             cursor: pointer;
             transition: var(--transition);
+            border: none;
         }
 
         .carousel-indicator.active {
             background-color: var(--primary-color);
+            transform: scale(1.2);
         }
+
+        .carousel-indicator:hover {
+            background-color: var(--primary-color);
+        }
+
+
         /* Map Section */
         .map-container {
             border-radius: 8px;
@@ -694,49 +706,47 @@
                     <p>Nuestro equipo de conductores está altamente capacitado y conoce perfectamente las rutas de la ciudad, garantizando que llegues a tu destino de manera segura y eficiente.</p>
                 </div>
                 <div class="about-image">
-                    <div class="service-image">
-                        <img src="assets/images/acerca-de-nosotros.jpg" alt="Sobre nosotros" loading="lazy">
-                    </div>
+                    <img src="assets/images/acerca-de-nosotros.jpg" alt="Sobre nosotros" loading="lazy">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-<section class="section" id="servicios">
-    <div class="container">
-        <h2 class="section-title">Nuestros Servicios</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-image">
-                    <img src="assets/images/servicio-regular.jpg" alt="Servicio Regular de Taxi Merced" loading="lazy">
+    <section class="section" id="servicios">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/images/servicio-regular.jpg" alt="Servicio Regular de Taxi Merced" loading="lazy">
+                    </div>
+                    <div class="service-content">
+                        <h3>Servicios Prefijados</h3>
+                        <p>Ideal para personas que necesitan transporte regular de lunes a viernes a la misma hora. Programamos tu viaje y te recogemos puntualmente cada día.</p>
+                    </div>
                 </div>
-                <div class="service-content">
-                    <h3>Servicios Prefijados</h3>
-                    <p>Ideal para personas que necesitan transporte regular de lunes a viernes a la misma hora. Programamos tu viaje y te recogemos puntualmente cada día.</p>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/images/servicio-24horas.jpg" alt="Servicio 24 Horas de Taxi Merced" loading="lazy">
+                    </div>
+                    <div class="service-content">
+                        <h3>Servicio 24 Horas</h3>
+                        <p>Disponibles las 24 horas del día, los 365 días del año. Ya sea temprano por la mañana o tarde en la noche, estamos aquí para llevarte a tu destino.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="service-card">
-                <div class="service-image">
-                    <img src="assets/images/servicio-24horas.jpg" alt="Servicio 24 Horas de Taxi Merced" loading="lazy">
-                </div>
-                <div class="service-content">
-                    <h3>Servicio 24 Horas</h3>
-                    <p>Disponibles las 24 horas del día, los 365 días del año. Ya sea temprano por la mañana o tarde en la noche, estamos aquí para llevarte a tu destino.</p>
-                </div>
-            </div>
-            <div class="service-card">
-                <div class="service-image">
-                    <img src="assets/images/reserva-inmediata.jpg" alt="Reserva Inmediata de Taxi Merced" loading="lazy">
-                </div>
-                <div class="service-content">
-                    <h3>Reserva Inmediata</h3>
-                    <p>¿Necesitas un taxi ahora? Llámanos o escríbenos por WhatsApp y en minutos tendrás un taxi en tu ubicación.</p>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="assets/images/reserva-inmediata.jpg" alt="Reserva Inmediata de Taxi Merced" loading="lazy">
+                    </div>
+                    <div class="service-content">
+                        <h3>Reserva Inmediata</h3>
+                        <p>¿Necesitas un taxi ahora? Llámanos o escríbenos por WhatsApp y en minutos tendrás un taxi en tu ubicación.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Text-Image Section 1 -->
     <section class="section">
@@ -749,9 +759,7 @@
                     <p>Miles de clientes satisfechos confían en nosotros para sus desplazamientos diarios, eventos especiales y viajes al aeropuerto.</p>
                 </div>
                 <div class="image-content">
-                    <div class="service-image">
-                        <img src="assets/images/conductor experimentado.jpg" alt="Imagen de conductor experimentado" loading="lazy">
-                    </div>
+                    <img src="assets/images/conductor-experimentado.jpg" alt="Conductor experimentado de Taxi Merced" loading="lazy">
                 </div>
             </div>
         </div>
@@ -768,75 +776,78 @@
                     <p>Nuestros conductores cumplen con todos los requisitos legales y cuentan con seguros de responsabilidad civil para mayor tranquilidad de nuestros clientes.</p>
                 </div>
                 <div class="image-content">
-                    <div class="service-image">
-                        <img src="assets/images/taxi-seguro.jpg" alt="imagen de taxi seguro" loading="lazy">
-                    </div>
+                    <img src="assets/images/taxi-seguro.jpg" alt="Taxi seguro de Taxi Merced" loading="lazy">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Gallery Section - HTML CORREGIDO -->
-<section class="section gallery" id="galeria">
-    <div class="container">
-        <h2 class="section-title">Nuestra Flota</h2>
-        <div class="carousel">
-            <div class="carousel-track-container">
-                <div class="carousel-track">
-                    <div class="carousel-slide current-slide">
-                        <div class="carousel-image">
-                            <img src="assets/images/taxi1.jpg" alt="Vehículo moderno y cómodo de Taxi Merced" loading="lazy">
+    <!-- Gallery Section - HTML SIMPLIFICADO -->
+    <section class="section gallery" id="galeria">
+        <div class="container">
+            <h2 class="section-title">Nuestra Flota</h2>
+            <div class="carousel">
+                <div class="carousel-track-container">
+                    <div class="carousel-track">
+                        <!-- Slide 1 -->
+                        <div class="carousel-slide">
+                            <div class="carousel-image">
+                                <img src="assets/images/taxi1.jpg" alt="Vehículo moderno y cómodo de Taxi Merced">
+                            </div>
+                            <div class="carousel-caption">
+                                <p>Vehículos modernos y cómodos para tu máximo confort</p>
+                            </div>
                         </div>
-                        <div class="carousel-caption">
-                            <p>Vehículos modernos y cómodos para tu máximo confort</p>
+                        <!-- Slide 2 -->
+                        <div class="carousel-slide">
+                            <div class="carousel-image">
+                                <img src="assets/images/taxi2.jpg" alt="Interior limpio y espacioso de Taxi Merced">
+                            </div>
+                            <div class="carousel-caption">
+                                <p>Interiores limpios y espaciosos para viajes placenteros</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="carousel-image">
-                            <img src="assets/images/taxi2.jpg" alt="Interior limpio y espacioso de Taxi Merced" loading="lazy">
+                        <!-- Slide 3 -->
+                        <div class="carousel-slide">
+                            <div class="carousel-image">
+                                <img src="assets/images/taxi3.jpg" alt="Taxi equipado con tecnología de Taxi Merced">
+                            </div>
+                            <div class="carousel-caption">
+                                <p>Equipados con la última tecnología para tu seguridad</p>
+                            </div>
                         </div>
-                        <div class="carousel-caption">
-                            <p>Interiores limpios y espaciosos para viajes placenteros</p>
+                        <!-- Slide 4 -->
+                        <div class="carousel-slide">
+                            <div class="carousel-image">
+                                <img src="assets/images/taxi4.jpg" alt="Mantenimiento regular de Taxi Merced">
+                            </div>
+                            <div class="carousel-caption">
+                                <p>Mantenimiento regular para garantizar tu seguridad</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="carousel-image">
-                            <img src="assets/images/taxi3.jpg" alt="Taxi equipado con tecnología de Taxi Merced" loading="lazy">
-                        </div>
-                        <div class="carousel-caption">
-                            <p>Equipados con la última tecnología para tu seguridad</p>
-                        </div>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="carousel-image">
-                            <img src="assets/images/taxi4.jpg" alt="Mantenimiento regular de Taxi Merced" loading="lazy">
-                        </div>
-                        <div class="carousel-caption">
-                            <p>Mantenimiento regular para garantizar tu seguridad</p>
-                        </div>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="carousel-image">
-                            <img src="assets/images/taxi5.jpg" alt="Conductor profesional de Taxi Merced" loading="lazy">
-                        </div>
-                        <div class="carousel-caption">
-                            <p>Conductores profesionales con amplia experiencia</p>
+                        <!-- Slide 5 -->
+                        <div class="carousel-slide">
+                            <div class="carousel-image">
+                                <img src="assets/images/taxi5.jpg" alt="Conductor profesional de Taxi Merced">
+                            </div>
+                            <div class="carousel-caption">
+                                <p>Conductores profesionales con amplia experiencia</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <button class="carousel-btn prev">&#10094;</button>
-            <button class="carousel-btn next">&#10095;</button>
-            <div class="carousel-indicators">
-                <div class="carousel-indicator active" data-index="0"></div>
-                <div class="carousel-indicator" data-index="1"></div>
-                <div class="carousel-indicator" data-index="2"></div>
-                <div class="carousel-indicator" data-index="3"></div>
-                <div class="carousel-indicator" data-index="4"></div>
+                <button class="carousel-btn prev">&#10094;</button>
+                <button class="carousel-btn next">&#10095;</button>
+                <div class="carousel-indicators">
+                    <button class="carousel-indicator active" data-index="0"></button>
+                    <button class="carousel-indicator" data-index="1"></button>
+                    <button class="carousel-indicator" data-index="2"></button>
+                    <button class="carousel-indicator" data-index="3"></button>
+                    <button class="carousel-indicator" data-index="4"></button>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Map Section -->
     <section class="section" id="contacto">
@@ -909,7 +920,7 @@
     </a>
 
     <script>
-        // Mobile Menu Toggle (se mantiene igual)
+        // Mobile Menu Toggle
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
 
@@ -918,7 +929,6 @@
             navMenu.classList.toggle('active');
         });
 
-        // Close mobile menu when clicking on a link (se mantiene igual)
         document.querySelectorAll('.nav-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
@@ -926,65 +936,74 @@
             });
         });
 
-        // Carrusel - Código completamente corregido
+        // CARRUSEL - CÓDIGO COMPLETAMENTE NUEVO Y SIMPLIFICADO
         document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.carousel');
             const track = document.querySelector('.carousel-track');
-            const slides = Array.from(track.children);
+            const slides = document.querySelectorAll('.carousel-slide');
             const nextButton = document.querySelector('.carousel-btn.next');
             const prevButton = document.querySelector('.carousel-btn.prev');
             const indicators = document.querySelectorAll('.carousel-indicator');
             
-            const slideWidth = slides[0].getBoundingClientRect().width;
-            let currentSlideIndex = 0;
-
-            // Arrange slides next to one another
-            slides.forEach((slide, index) => {
-                slide.style.left = slideWidth * index + 'px';
-            });
-
-            // Function to move to specific slide
-            const moveToSlide = (targetIndex) => {
-                const targetSlide = slides[targetIndex];
-                track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+            let currentIndex = 0;
+            const totalSlides = slides.length;
+            
+            // Función para actualizar la posición del carrusel
+            function updateCarousel() {
+                // Mover el track al slide actual
+                track.style.transform = `translateX(-${currentIndex * 20}%)`;
                 
-                // Update current slide class
-                slides.forEach(slide => slide.classList.remove('current-slide'));
-                targetSlide.classList.add('current-slide');
-                
-                // Update indicators
-                indicators.forEach(indicator => indicator.classList.remove('active'));
-                indicators[targetIndex].classList.add('active');
-                
-                currentSlideIndex = targetIndex;
-            };
-
-            // When I click next, move to next slide
-            nextButton.addEventListener('click', e => {
-                const nextIndex = (currentSlideIndex + 1) % slides.length;
-                moveToSlide(nextIndex);
-            });
-
-            // When I click prev, move to previous slide
-            prevButton.addEventListener('click', e => {
-                const prevIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
-                moveToSlide(prevIndex);
-            });
-
-            // When I click the nav indicators, move to that slide
-            indicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', e => {
-                    moveToSlide(index);
+                // Actualizar indicadores
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentIndex);
                 });
+            }
+            
+            // Función para ir al slide específico
+            function goToSlide(index) {
+                currentIndex = index;
+                updateCarousel();
+            }
+            
+            // Función para siguiente slide
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+            }
+            
+            // Función para slide anterior
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+            }
+            
+            // Event listeners
+            nextButton.addEventListener('click', nextSlide);
+            prevButton.addEventListener('click', prevSlide);
+            
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => goToSlide(index));
             });
-
-            // Auto slide every 5 seconds
-            setInterval(() => {
-                const nextIndex = (currentSlideIndex + 1) % slides.length;
-                moveToSlide(nextIndex);
-            }, 5000);
-
-            // Initialize first slide
-            moveToSlide(0);
+            
+            // Auto slide cada 5 segundos
+            let autoSlide = setInterval(nextSlide, 5000);
+            
+            // Pausar auto slide cuando el mouse está sobre el carrusel
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoSlide);
+            });
+            
+            // Reanudar auto slide cuando el mouse sale del carrusel
+            carousel.addEventListener('mouseleave', () => {
+                autoSlide = setInterval(nextSlide, 5000);
+            });
+            
+            // Inicializar
+            updateCarousel();
+            
+            console.log('Carrusel inicializado correctamente');
+            console.log('Total de slides:', totalSlides);
         });
-    </script></body>
+    </script>
+</body>
 </html>
