@@ -658,6 +658,182 @@
                 padding: 10px 20px;
             }
         }
+
+
+        /* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-modal {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--accent-color);
+    transition: var(--transition);
+}
+
+.close-modal:hover {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+.service-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+}
+
+.service-option {
+    padding: 1rem;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    text-align: left;
+}
+
+.service-option:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.service-option.active {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.location-section {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: var(--light-color);
+    border-radius: 8px;
+}
+
+.location-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.location-loading {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.btn-location {
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.btn-location:hover {
+    background-color: var(--secondary-color);
+}
+
+.message-section {
+    margin: 1.5rem 0;
+}
+
+.message-section textarea {
+    width: 100%;
+    height: 80px;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    font-family: 'Lato', sans-serif;
+    margin-top: 0.5rem;
+}
+
+.btn-send {
+    width: 100%;
+    padding: 1rem;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1rem;
+}
+
+.btn-send:hover:not(:disabled) {
+    background-color: #1da851;
+    transform: translateY(-2px);
+}
+
+.btn-send:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.location-success {
+    color: #25D366;
+    font-weight: 600;
+}
+
+.location-error {
+    color: #ff4444;
+    font-weight: 600;
+}
+
+
+
     </style>
 </head>
 <body>
@@ -912,12 +1088,47 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/524427128200" class="whatsapp-btn" target="_blank" aria-label="Contactar por WhatsApp">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893-.001-3.189-1.248-6.189-3.515-8.452"/>
-        </svg>
-    </a>
+    <!-- WhatsApp Button Mejorado con GPS -->
+<div class="whatsapp-btn" id="whatsappBtn" aria-label="Contactar por WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893-.001-3.189-1.248-6.189-3.515-8.452"/>
+    </svg>
+</div>
+
+<!-- Modal para solicitar taxi -->
+<div id="taxiModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>📞 Solicitar Taxi</h3>
+        <p>¿Qué tipo de servicio necesitas?</p>
+        
+        <div class="service-options">
+            <button class="service-option" data-service="Servicio Regular">🚗 Servicio Regular</button>
+            <button class="service-option" data-service="Servicio 24 Horas">🌙 Servicio 24 Horas</button>
+            <button class="service-option" data-service="Reserva Inmediata">⚡ Reserva Inmediata</button>
+            <button class="service-option" data-service="Otro Servicio">📋 Otro Servicio</button>
+        </div>
+        
+        <div class="location-section">
+            <label for="userLocation">📍 Tu ubicación:</label>
+            <div id="locationStatus" class="location-status">
+                <span id="locationText">Obteniendo ubicación...</span>
+                <div class="location-loading"></div>
+            </div>
+            <button id="getLocationBtn" class="btn-location">🔄 Actualizar Ubicación</button>
+        </div>
+        
+        <div class="message-section">
+            <label for="userMessage">💬 Mensaje adicional (opcional):</label>
+            <textarea id="userMessage" placeholder="Ej: Necesito un taxi para 4 personas, con equipaje..."></textarea>
+        </div>
+        
+        <button id="sendWhatsApp" class="btn-send" disabled>
+            📤 Enviar solicitud por WhatsApp
+        </button>
+    </div>
+</div>
+
 
     <script>
         // Mobile Menu Toggle
@@ -1004,6 +1215,187 @@
             console.log('Carrusel inicializado correctamente');
             console.log('Total de slides:', totalSlides);
         });
+
+
+        // WhatsApp con GPS - Funcionalidad mejorada
+document.addEventListener('DOMContentLoaded', function() {
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    const taxiModal = document.getElementById('taxiModal');
+    const closeModal = document.querySelector('.close-modal');
+    const serviceOptions = document.querySelectorAll('.service-option');
+    const getLocationBtn = document.getElementById('getLocationBtn');
+    const locationText = document.getElementById('locationText');
+    const locationStatus = document.getElementById('locationStatus');
+    const userMessage = document.getElementById('userMessage');
+    const sendWhatsApp = document.getElementById('sendWhatsApp');
+    
+    let userLocation = null;
+    let selectedService = '';
+    const phoneNumber = '524427128200';
+    
+    // Abrir modal al hacer click en WhatsApp
+    whatsappBtn.addEventListener('click', function() {
+        taxiModal.style.display = 'block';
+        getLocation(); // Obtener ubicación automáticamente al abrir
+    });
+    
+    // Cerrar modal
+    closeModal.addEventListener('click', function() {
+        taxiModal.style.display = 'none';
+    });
+    
+    // Cerrar modal al hacer click fuera
+    window.addEventListener('click', function(event) {
+        if (event.target === taxiModal) {
+            taxiModal.style.display = 'none';
+        }
+    });
+    
+    // Seleccionar servicio
+    serviceOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            serviceOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            selectedService = this.getAttribute('data-service');
+            updateSendButton();
+        });
+    });
+    
+    // Obtener ubicación
+    function getLocation() {
+        locationText.textContent = 'Obteniendo ubicación...';
+        locationStatus.classList.remove('location-success', 'location-error');
+        sendWhatsApp.disabled = true;
+        
+        if (!navigator.geolocation) {
+            locationText.textContent = '❌ Geolocalización no soportada por tu navegador';
+            locationStatus.classList.add('location-error');
+            return;
+        }
+        
+        navigator.geolocation.getCurrentPosition(
+            // Success
+            function(position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                userLocation = { lat, lng };
+                
+                // Obtener dirección usando reverse geocoding
+                getAddressFromCoordinates(lat, lng);
+            },
+            // Error
+            function(error) {
+                let errorMessage = '❌ No se pudo obtener la ubicación';
+                
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMessage = '❌ Permiso de ubicación denegado. Por favor habilita la ubicación en tu navegador.';
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        errorMessage = '❌ Información de ubicación no disponible.';
+                        break;
+                    case error.TIMEOUT:
+                        errorMessage = '❌ Tiempo de espera agotado para obtener la ubicación.';
+                        break;
+                }
+                
+                locationText.textContent = errorMessage;
+                locationStatus.classList.add('location-error');
+                updateSendButton();
+            },
+            // Options
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 60000
+            }
+        );
+    }
+    
+    // Obtener dirección a partir de coordenadas
+    function getAddressFromCoordinates(lat, lng) {
+        // Usar Nominatim (OpenStreetMap) para reverse geocoding gratuito
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.display_name) {
+                    const address = data.display_name;
+                    locationText.textContent = `📍 ${address}`;
+                    locationStatus.classList.add('location-success');
+                } else {
+                    locationText.textContent = `📍 Ubicación: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    locationStatus.classList.add('location-success');
+                }
+                updateSendButton();
+            })
+            .catch(error => {
+                // Si falla el reverse geocoding, mostrar coordenadas
+                locationText.textContent = `📍 Ubicación: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                locationStatus.classList.add('location-success');
+                updateSendButton();
+            });
+    }
+    
+    // Botón para actualizar ubicación
+    getLocationBtn.addEventListener('click', getLocation);
+    
+    // Actualizar estado del botón de enviar
+    function updateSendButton() {
+        if (userLocation && selectedService) {
+            sendWhatsApp.disabled = false;
+        } else {
+            sendWhatsApp.disabled = true;
+        }
+    }
+    
+    // Enviar mensaje por WhatsApp
+    sendWhatsApp.addEventListener('click', function() {
+        if (!userLocation || !selectedService) return;
+        
+        const lat = userLocation.lat;
+        const lng = userLocation.lng;
+        const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+        
+        let message = `¡Hola! Necesito un taxi 🚖\n\n`;
+        message += `*Servicio solicitado:* ${selectedService}\n`;
+        message += `*Mi ubicación:* ${locationText.textContent.replace('📍 ', '')}\n`;
+        message += `*Enlace de Google Maps:* ${mapsUrl}\n`;
+        
+        if (userMessage.value.trim()) {
+            message += `*Mensaje adicional:* ${userMessage.value.trim()}\n`;
+        }
+        
+        message += `\n*Taxi Merced* - Servicio confiable desde hace 15 años`;
+        
+        // Codificar el mensaje para URL
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        
+        // Abrir WhatsApp
+        window.open(whatsappUrl, '_blank');
+        
+        // Cerrar modal
+        taxiModal.style.display = 'none';
+        
+        // Resetear formulario
+        resetForm();
+    });
+    
+    // Resetear formulario
+    function resetForm() {
+        serviceOptions.forEach(opt => opt.classList.remove('active'));
+        selectedService = '';
+        userLocation = null;
+        userMessage.value = '';
+        locationText.textContent = 'Obteniendo ubicación...';
+        locationStatus.classList.remove('location-success', 'location-error');
+        sendWhatsApp.disabled = true;
+    }
+    
+    // Actualizar botón cuando se escribe mensaje (no bloqueante)
+    userMessage.addEventListener('input', updateSendButton);
+});
+
     </script>
 </body>
 </html>
