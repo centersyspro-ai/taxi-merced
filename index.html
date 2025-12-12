@@ -1423,13 +1423,13 @@
                 const lng = userLocation.lng;
                 const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
                 
-                let message = `¡Hola! Necesito un taxi 🚖\n\n`;
+                let message = `¡Hola! Necesito un taxi \n\n`;
                 message += `*Servicio solicitado:* ${selectedService}\n`;
                 message += `*Mi ubicación:* ${locationText.textContent.replace('📍 ', '')}\n`;
                 message += `*Enlace de Google Maps:* ${mapsUrl}\n`;
                 
                 if (userMessage.value.trim()) {
-                    message += `*Mensaje adicional:* ${userMessage.value.trim()}\n`;
+                    message += `*Mensaje del usuario:* ${userMessage.value.trim()}\n`;
                 }
                 
                 message += `\n*Taxi Merced* - Servicio confiable desde hace 15 años`;
