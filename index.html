@@ -1382,29 +1382,100 @@
                 );
             }
             
-            // Obtener dirección a partir de coordenadas
-            function getAddressFromCoordinates(lat, lng) {
-                // Usar Nominatim (OpenStreetMap) para reverse geocoding gratuito
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.display_name) {
-                            const address = data.display_name;
-                            locationText.textContent = `📍 ${address}`;
-                            locationStatus.classList.add('location-success');
-                        } else {
-                            locationText.textContent = `📍 Ubicación: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                            locationStatus.classList.add('location-success');
-                        }
-                        updateSendButton();
-                    })
-                    .catch(error => {
-                        // Si falla el reverse geocoding, mostrar coordenadas
-                        locationText.textContent = `📍 Ubicación: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                        locationStatus.classList.add('location-success');
-                        updateSendButton();
-                    });
+            // Obtener dirección a partir de coordenadas - FORMATO COLOQUIAL MEXICANO
+function getAddressFromCoordinates(lat, lng) {
+    // Usar Nominatim (OpenStreetMap) para reverse geocoding gratuito
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&accept-language=es`)
+        .then(response => response.json())
+        .then(data => {
+            let direccionFormateada = '';
+            
+            if (data && data.address) {
+                const addr = data.address;
+                
+                // CONSTRUIR DIRECCIÓN EN FORMATO COLOQUIAL MEXICANO:
+                // "calle [nombre] no. [número] [ciudad] [estado]"
+                
+                // 1. Obtener la calle/avenida
+                let calle = '';
+                if (addr.road) {
+                    calle = addr.road;
+                    // Si no incluye "calle", "av.", etc., agregar "Calle "
+                    if (!/^(calle|avenida|av\.|av |blvd|boulevard|cerrada|cerr\.|privada|priv\.)/i.test(calle)) {
+                        calle = 'Calle ' + calle;
+                    }
+                }
+                
+                // 2. Agregar número si existe
+                if (addr.house_number) {
+                    calle += ` no. ${addr.house_number}`;
+                }
+                
+                // 3. Obtener ciudad (prioridad: city > town > suburb > village)
+                let ciudad = addr.city || addr.town || addr.suburb || addr.village || '';
+                
+                // 4. Obtener estado
+                let estado = addr.state || '';
+                
+                // 5. Construir dirección final en formato coloquial
+                if (calle) {
+                    direccionFormateada = calle;
+                    if (ciudad) {
+                        direccionFormateada += ` ${ciudad}`;
+                    }
+                    if (estado && !direccionFormateada.includes(estado)) {
+                        direccionFormateada += ` ${estado}`;
+                    }
+                }
             }
+            
+            // Si no se pudo construir formato coloquial, usar display_name y formatearlo
+            if (!direccionFormateada || direccionFormateada.trim().length < 10) {
+                if (data && data.display_name) {
+                    direccionFormateada = formatearDireccionColoquial(data.display_name);
+                } else {
+                    direccionFormateada = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                }
+            }
+            
+            locationText.textContent = `📍 ${direccionFormateada}`;
+            locationStatus.classList.add('location-success');
+            updateSendButton();
+        })
+        .catch(error => {
+            // Si falla el reverse geocoding, mostrar coordenadas
+            locationText.textContent = `📍 Ubicación: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            locationStatus.classList.add('location-success');
+            updateSendButton();
+        });
+}
+
+// Función auxiliar: convertir dirección internacional a formato coloquial mexicano
+function formatearDireccionColoquial(direccionCompleta) {
+    if (!direccionCompleta) return '';
+    
+    // 1. Eliminar código postal y "México"
+    let direccion = direccionCompleta.replace(/,\s*\d{5},?\s*México$/i, '');
+    direccion = direccion.replace(/,\s*México$/i, '');
+    
+    // 2. Eliminar "Residencial", "Colonia", "Fraccionamiento" con sus nombres
+    direccion = direccion.replace(/(Residencial|Colonia|Fraccionamiento|Unidad Habitacional)\s+[\w\s]+,?\s*/gi, '');
+    
+    // 3. Reordenar: Si el número está al inicio, moverlo después del nombre de la calle
+    // Ej: "311 Calle Mar Caspio" -> "Calle Mar Caspio no. 311"
+    direccion = direccion.replace(/^(\d+)\s+(Calle|Avenida|Av\.?|Blvd|Boulevard|Cerrada|Privada)\s+/i, '$2 $1 ');
+    direccion = direccion.replace(/^(\d+)\s+([^,]+),?\s*/i, '$2 no. $1');
+    
+    // 4. Asegurar formato "no." en lugar de solo número
+    direccion = direccion.replace(/(\D)\s+(\d+)(\s|,|$)/, '$1 no. $2$3');
+    
+    // 5. Limpiar comas y espacios extras
+    direccion = direccion.replace(/\s*,\s*/g, ' ');
+    direccion = direccion.replace(/\s+/g, ' ');
+    direccion = direccion.trim();
+    
+    return direccion;
+}
             
             // Botón para actualizar ubicación
             getLocationBtn.addEventListener('click', getLocation);
