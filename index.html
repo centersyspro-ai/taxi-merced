@@ -1454,25 +1454,7 @@ function getAddressFromCoordinates(lat, lng) {
 function formatearDireccionColoquial(direccionCompleta) {
     if (!direccionCompleta) return '';
     
-    // 1. Eliminar código postal y "México"
-    let direccion = direccionCompleta.replace(/,\s*\d{5},?\s*México$/i, '');
-    direccion = direccion.replace(/,\s*México$/i, '');
     
-    // 2. Eliminar "Residencial", "Colonia", "Fraccionamiento" con sus nombres
-    direccion = direccion.replace(/(Residencial|Colonia|Fraccionamiento|Unidad Habitacional)\s+[\w\s]+,?\s*/gi, '');
-    
-    // 3. Reordenar: Si el número está al inicio, moverlo después del nombre de la calle
-    // Ej: "311 Calle Mar Caspio" -> "Calle Mar Caspio no. 311"
-    direccion = direccion.replace(/^(\d+)\s+(Calle|Avenida|Av\.?|Blvd|Boulevard|Cerrada|Privada)\s+/i, '$2 $1 ');
-    direccion = direccion.replace(/^(\d+)\s+([^,]+),?\s*/i, '$2 no. $1');
-    
-    // 4. Asegurar formato "no." en lugar de solo número
-    direccion = direccion.replace(/(\D)\s+(\d+)(\s|,|$)/, '$1 no. $2$3');
-    
-    // 5. Limpiar comas y espacios extras
-    direccion = direccion.replace(/\s*,\s*/g, ' ');
-    direccion = direccion.replace(/\s+/g, ' ');
-    direccion = direccion.trim();
     
     return direccion;
 }
