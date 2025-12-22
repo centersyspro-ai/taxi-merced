@@ -1371,7 +1371,7 @@
             updateCarousel();
         });
 
-        // WhatsApp Modal - NUEVO SISTEMA MEJORADO
+        // WhatsApp Modal - NUEVO SISTEMA MEJORADO (CORREGIDO)
         document.addEventListener('DOMContentLoaded', function() {
             // Elementos del modal
             const taxiModal = new bootstrap.Modal(document.getElementById('taxiModalWhatsApp'));
@@ -1396,7 +1396,7 @@
             let userLocation = null;
             let addressText = '';
             let useAutoLocation = true;
-            const phoneNumber = '524427128200'; // Número de Taxi Merced
+            const taxiMercedPhone = '524427128200'; // Número FIJO de Taxi Merced (destino)
             
             // Fallback para SVG
             const whatsappSVG = document.getElementById('whatsappSVG');
@@ -1512,26 +1512,24 @@
                     });
             }
             
-            // Validar teléfono mexicano
+            // Validar teléfono mexicano (solo para incluirlo en el mensaje)
             function validateMexicanPhone(phone) {
                 // Limpiar el número
                 const cleanPhone = phone.replace(/\D/g, '');
                 
                 // Validar formatos:
-                // 1. +52 442 123 4567 → 524421234567 (12 dígitos)
-                // 2. 52 442 123 4567 → 524421234567 (12 dígitos)
-                // 3. 521 442 123 4567 → 5214421234567 (13 dígitos)
-                // 4. 442 123 4567 → 4421234567 (10 dígitos)
+                // 1. 10 dígitos: 4421234567
+                // 2. 12 dígitos con 52: 524421234567
+                // 3. 13 dígitos con 521: 5214421234567
                 
                 if (cleanPhone.length === 10) {
-                    // Formato local: 4421234567
-                    return cleanPhone;
-                } else if (cleanPhone.length === 12 && (cleanPhone.startsWith('52'))) {
-                    // Formato internacional: 524421234567
-                    return cleanPhone;
+                    return cleanPhone; // Formato local
+                } else if (cleanPhone.length === 12 && cleanPhone.startsWith('52')) {
+                    return cleanPhone.substring(2); // Quitar el 52
                 } else if (cleanPhone.length === 13 && cleanPhone.startsWith('521')) {
-                    // Formato móvil: 5214421234567
-                    return cleanPhone;
+                    return cleanPhone.substring(3); // Quitar el 521
+                } else if (cleanPhone.length === 11 && cleanPhone.startsWith('1')) {
+                    return cleanPhone.substring(1); // Quitar el 1 inicial
                 }
                 
                 return null;
@@ -1549,7 +1547,7 @@
                     userName.classList.remove('is-invalid');
                 }
                 
-                // Validar teléfono
+                // Validar teléfono (solo para mensaje)
                 const phoneValid = validateMexicanPhone(userPhone.value);
                 if (!phoneValid) {
                     userPhone.classList.add('is-invalid');
@@ -1596,15 +1594,15 @@
             userMessage.addEventListener('input', updateSendButton);
             manualAddress.addEventListener('input', updateSendButton);
             
-            // Enviar mensaje por WhatsApp
+            // Enviar mensaje por WhatsApp - CORREGIDO
             sendWhatsAppBtn.addEventListener('click', function() {
                 if (!validateForm()) {
                     return;
                 }
                 
-                // Preparar datos
-                const phoneValid = validateMexicanPhone(userPhone.value);
-                const whatsappPhone = phoneValid.startsWith('52') ? phoneValid : '52' + phoneValid;
+                // Obtener teléfono del cliente (para incluirlo en el mensaje)
+                const clientPhone = validateMexicanPhone(userPhone.value);
+                const clientPhoneFormatted = clientPhone ? `+52${clientPhone}` : userPhone.value.trim();
                 
                 // Determinar ubicación
                 let locationText = '';
@@ -1622,7 +1620,7 @@
                 let message = `¡Hola Taxi Merced! Necesito un servicio de taxi.\n\n`;
                 message += `*Información del cliente:*\n`;
                 message += `• Nombre: ${userName.value.trim()}\n`;
-                message += `• Teléfono: ${userPhone.value.trim()}\n\n`;
+                message += `• Teléfono: ${clientPhoneFormatted}\n\n`;
                 message += `*Detalles del servicio:*\n`;
                 message += `• Tipo: ${serviceType.value}\n`;
                 message += `• Ubicación: ${locationText}\n`;
@@ -1638,19 +1636,20 @@
                 const encodedMessage = encodeURIComponent(message);
                 
                 // Determinar URL de WhatsApp
+                // EL DESTINO SIEMPRE ES EL NÚMERO DE TAXI MERCED
                 let whatsappUrl = '';
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
                 
                 if (isMobile && !isIOS) {
-                    // Android: abre app nativa
-                    whatsappUrl = `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
+                    // Android: abre app nativa hacia Taxi Merced
+                    whatsappUrl = `whatsapp://send?phone=${taxiMercedPhone}&text=${encodedMessage}`;
                 } else {
-                    // iOS y desktop: abre WhatsApp Web
-                    whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
+                    // iOS y desktop: abre WhatsApp Web hacia Taxi Merced
+                    whatsappUrl = `https://wa.me/${taxiMercedPhone}?text=${encodedMessage}`;
                 }
                 
-                // Abrir WhatsApp
+                // Abrir WhatsApp (siempre hacia Taxi Merced)
                 window.open(whatsappUrl, '_blank');
                 
                 // Cerrar modal después de un breve retraso
