@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS para el modal responsive -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Variables CSS */
         :root {
@@ -19,6 +23,10 @@
             --white: #ffffff;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark: #128C7E;
+            --danger: #dc3545;
+            --success: #28a745;
         }
 
         /* Reset y estilos base */
@@ -538,41 +546,50 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* WhatsApp Button */
+        /* WhatsApp Button - MODIFICADO CON SVG */
         .whatsapp-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 60px;
-            height: 60px;
-            background-color: #25D366;
+            width: 70px;
+            height: 70px;
+            background-color: var(--whatsapp-green);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             transition: var(--transition);
-            animation: pulse 2s infinite;
+            animation: pulse-whatsapp 2s infinite;
+            border: none;
+            cursor: pointer;
         }
 
         .whatsapp-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            transform: scale(1.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background-color: var(--whatsapp-dark);
         }
 
         .whatsapp-btn svg {
-            width: 35px;
-            height: 35px;
+            width: 38px;
+            height: 38px;
             fill: var(--white);
         }
 
-        @keyframes pulse {
+        /* Fallback si FontAwesome no carga */
+        .whatsapp-btn .fa-whatsapp {
+            font-size: 38px;
+            color: white;
+        }
+
+        @keyframes pulse-whatsapp {
             0% {
                 box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
             }
             70% {
-                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
             }
             100% {
                 box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
@@ -640,6 +657,19 @@
             .carousel-image {
                 height: 300px;
             }
+            
+            /* WhatsApp button más grande en móviles */
+            .whatsapp-btn {
+                width: 75px;
+                height: 75px;
+                bottom: 25px;
+                right: 25px;
+            }
+            
+            .whatsapp-btn svg {
+                width: 42px;
+                height: 42px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -654,218 +684,206 @@
             .btn {
                 padding: 10px 20px;
             }
-        }
-
-        /* Modal Styles - MEJORADO */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            margin: 5% auto;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(96, 94, 207, 0.3);
-            position: relative;
-            animation: modalSlideIn 0.3s ease-out;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            
+            .whatsapp-btn {
+                width: 70px;
+                height: 70px;
+                bottom: 20px;
+                right: 20px;
             }
         }
 
-        .close-modal {
-            position: absolute;
-            right: 1rem;
-            top: 1rem;
+        /* Modal Styles - COMPLETAMENTE NUEVO Y MEJORADO */
+        .modal-taxi {
+            font-size: 16px;
+        }
+        
+        .modal-taxi .modal-header {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--secondary-color);
+        }
+        
+        .modal-taxi .modal-title {
             font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--accent-color);
+            font-weight: 900;
+        }
+        
+        .modal-taxi .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-taxi .form-label {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .modal-taxi .form-control {
+            font-size: 1.1rem;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             transition: var(--transition);
-            background: none;
-            border: none;
-            width: 30px;
-            height: 30px;
+        }
+        
+        .modal-taxi .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25);
+        }
+        
+        .modal-taxi .form-control-lg {
+            font-size: 1.2rem;
+            padding: 1rem;
+        }
+        
+        /* Ubicación section */
+        .location-options {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .location-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .location-toggle-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            gap: 8px;
         }
-
-        .close-modal:hover {
-            color: var(--secondary-color);
-            background-color: rgba(0,0,0,0.1);
-            transform: scale(1.1);
-        }
-
-        .service-info {
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background-color: var(--light-color);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .service-info p {
-            margin-bottom: 1rem;
-            color: var(--text-color);
-        }
-
-        .service-info ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .service-info li {
-            margin-bottom: 0.8rem;
-            padding: 0.5rem;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 4px;
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .service-info strong {
-            color: var(--secondary-color);
-        }
-
-        .service-option {
-            padding: 1rem;
-            border: 2px solid var(--primary-color);
-            background: transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            text-align: left;
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-
-        .service-option:hover {
+        
+        .location-toggle-btn.active {
             background-color: var(--primary-color);
-            color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        .service-option.active {
-            background-color: var(--primary-color);
+            border-color: var(--primary-color);
             color: var(--secondary-color);
         }
-
-        .location-section {
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background-color: var(--light-color);
-            border-radius: 8px;
+        
+        .location-toggle-btn:hover:not(.active) {
+            border-color: var(--primary-color);
         }
-
+        
         .location-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 0.5rem 0;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
         }
-
+        
+        .location-status.success {
+            border-left-color: var(--success);
+        }
+        
+        .location-status.error {
+            border-left-color: var(--danger);
+        }
+        
         .location-loading {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary-color);
-            border-top: 2px solid transparent;
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
+            vertical-align: middle;
+            margin-right: 10px;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .btn-location {
-            background-color: var(--accent-color);
-            color: var(--white);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
-        .btn-location:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .message-section {
-            margin: 1.5rem 0;
-        }
-
+        
+        /* Mensaje section */
         .message-section textarea {
-            width: 100%;
-            height: 80px;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: vertical;
-            font-family: 'Lato', sans-serif;
-            margin-top: 0.5rem;
-        }
-
-        .btn-send {
-            width: 100%;
-            padding: 1rem;
-            background-color: #25D366;
-            color: white;
-            border: none;
-            border-radius: 8px;
+            min-height: 120px;
             font-size: 1.1rem;
+        }
+        
+        /* Botones de acción */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+        
+        .btn-whatsapp {
+            background-color: var(--whatsapp-green);
+            color: white;
             font-weight: 700;
-            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 1rem;
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             transition: var(--transition);
-            margin-top: 1rem;
         }
-
-        .btn-send:hover:not(:disabled) {
-            background-color: #1da851;
-            transform: translateY(-2px);
+        
+        .btn-whatsapp:hover {
+            background-color: var(--whatsapp-dark);
+            transform: translateY(-3px);
         }
-
-        .btn-send:disabled {
+        
+        .btn-whatsapp:disabled {
             background-color: #ccc;
             cursor: not-allowed;
+            transform: none;
         }
-
-        .location-success {
-            color: #25D366;
-            font-weight: 600;
+        
+        .btn-cancel {
+            flex: 1;
+            background-color: #6c757d;
+            color: white;
         }
-
-        .location-error {
-            color: #ff4444;
-            font-weight: 600;
+        
+        .btn-cancel:hover {
+            background-color: #5a6268;
         }
-
+        
+        /* Validación */
+        .is-invalid {
+            border-color: var(--danger) !important;
+        }
+        
+        .invalid-feedback {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .is-invalid + .invalid-feedback {
+            display: block;
+        }
+        
+        /* Estilos para teléfonos */
+        .phone-format-note {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
         /* Estilos para APK/APP */
         .app-mode .whatsapp-btn {
-            bottom: 80px; /* Más arriba para no cubrir navegación */
+            bottom: 90px; /* Más arriba para no cubrir navegación */
         }
 
         .app-mode header {
@@ -880,6 +898,29 @@
             
             .hero {
                 margin-top: calc(80px + env(safe-area-inset-top));
+            }
+        }
+        
+        /* Mejoras específicas para móviles en modal */
+        @media (max-width: 576px) {
+            .modal-taxi .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            .modal-taxi .modal-body {
+                padding: 1.25rem;
+            }
+            
+            .modal-taxi .modal-title {
+                font-size: 1.3rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-whatsapp, .btn-cancel {
+                width: 100%;
             }
         }
     </style>
@@ -1136,46 +1177,111 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Button Mejorado con GPS -->
-    <div class="whatsapp-btn" id="whatsappBtn" aria-label="Contactar por WhatsApp" role="button" tabindex="0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <!-- WhatsApp Button con SVG y fallback -->
+    <button class="whatsapp-btn" id="whatsappBtn" aria-label="Solicitar taxi por WhatsApp" data-bs-toggle="modal" data-bs-target="#taxiModalWhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="whatsappSVG">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893-.001-3.189-1.248-6.189-3.515-8.452"/>
         </svg>
-    </div>
+        <!-- Fallback si SVG no carga -->
+        <i class="fab fa-whatsapp" style="display: none;"></i>
+    </button>
 
-    <!-- Modal para solicitar taxi -->
-    <div id="taxiModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
-        <div class="modal-content">
-            <button class="close-modal" aria-label="Cerrar modal">&times;</button>
-            <h3 id="modalTitle">📞 Solicitar Taxi (Activa tu GPS)</h3>
-            <!--
-            <p>¿Qué tipo de servicio necesitas? Descríbelo en el cuadro de texto.</p>
-            
-            <div class="service-info">
-                <p>🚖 <strong>1.-Servicio de taxi regular.</strong></p>
-                <p><strong>2.-Solicitar taxi a hora programada.</strong></p>
-            </div>
-            -->
-
-            <div class="location-section">
-                <label for="userLocation">📍 Tu ubicación:</label>
-                <div id="locationStatus" class="location-status">
-                    <span id="locationText">Obteniendo ubicación...</span>
-                    <div class="location-loading" aria-hidden="true"></div>
+    <!-- Modal WhatsApp NUEVO Y MEJORADO -->
+    <div class="modal fade modal-taxi" id="taxiModalWhatsApp" tabindex="-1" aria-labelledby="taxiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="taxiModalLabel">
+                        <i class="fab fa-whatsapp me-2"></i>SOLICITAR TAXI POR WHATSAPP
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <button id="getLocationBtn" class="btn-location">🔄 Actualizar Ubicación</button>
+                
+                <div class="modal-body">
+                    <!-- Información del usuario -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label for="userName" class="form-label">Nombre completo *</label>
+                            <input type="text" class="form-control form-control-lg" id="userName" placeholder="Ej: Juan Pérez" required>
+                            <div class="invalid-feedback">Por favor ingresa tu nombre.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="userPhone" class="form-label">Teléfono *</label>
+                            <input type="tel" class="form-control form-control-lg" id="userPhone" placeholder="Ej: 4421234567" required>
+                            <div class="invalid-feedback">Ingresa un teléfono válido (10 dígitos).</div>
+                            <small class="phone-format-note">Formato: 10 dígitos, puede empezar con +52, 521, o 442</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Sistema dual de ubicación -->
+                    <div class="location-options">
+                        <h5 class="mb-3"><i class="fas fa-map-marker-alt me-2"></i>¿Cómo deseas compartir tu ubicación?</h5>
+                        
+                        <div class="location-toggle mb-4">
+                            <button type="button" class="location-toggle-btn active" id="autoLocationBtn">
+                                <i class="fas fa-map-marked-alt"></i> Automática (GPS)
+                            </button>
+                            <button type="button" class="location-toggle-btn" id="manualLocationBtn">
+                                <i class="fas fa-keyboard"></i> Manual
+                            </button>
+                        </div>
+                        
+                        <!-- Ubicación automática -->
+                        <div id="autoLocationSection">
+                            <div class="location-status" id="autoLocationStatus">
+                                <div class="location-loading"></div>
+                                <span id="autoLocationText">Obteniendo tu ubicación automáticamente...</span>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-2" id="refreshLocationBtn">
+                                <i class="fas fa-sync-alt me-1"></i> Actualizar Ubicación
+                            </button>
+                        </div>
+                        
+                        <!-- Ubicación manual -->
+                        <div id="manualLocationSection" style="display: none;">
+                            <label for="manualAddress" class="form-label">Escribe tu dirección completa:</label>
+                            <input type="text" class="form-control mb-2" id="manualAddress" placeholder="Ej: Calle Beta No.21, Col. Romero de Terreros, Coyoacán, CDMX">
+                            <small class="text-muted">Esta dirección se incluirá en el mensaje a WhatsApp.</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Detalles del servicio -->
+                    <div class="mb-4">
+                        <label for="serviceType" class="form-label">Tipo de servicio *</label>
+                        <select class="form-select form-control-lg" id="serviceType" required>
+                            <option value="" selected disabled>Selecciona una opción</option>
+                            <option value="Servicio Prefijado (Regular)">Servicio Prefijado (Regular)</option>
+                            <option value="Servicio 24 Horas">Servicio 24 Horas</option>
+                            <option value="Reserva Inmediata">Reserva Inmediata</option>
+                            <option value="Viaje al Aeropuerto">Viaje al Aeropuerto</option>
+                            <option value="Otro">Otro (especificar abajo)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Mensaje personalizado -->
+                    <div class="mb-4">
+                        <label for="userMessage" class="form-label">Detalles adicionales del servicio:</label>
+                        <textarea class="form-control" id="userMessage" rows="4" placeholder="Ej: Necesito un taxi para 4 personas, con equipaje, mañana a las 8:00 AM, dirección al Centro Histórico..."></textarea>
+                        <small class="text-muted">Describe con detalle lo que necesitas para un mejor servicio.</small>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i> Cancelar
+                        </button>
+                        <button type="button" class="btn btn-success btn-whatsapp" id="sendWhatsAppBtn" disabled>
+                            <i class="fab fa-whatsapp me-2"></i> Enviar por WhatsApp
+                        </button>
+                    </div>
+                </div>
             </div>
-            
-            <div class="message-section">
-                <label for="userMessage">💬 Describe el servicio que necesitas (Tu ubicación se enviará con el mensaje):</label>
-                <textarea id="userMessage" placeholder="Ejemplo: Necesito un taxi para 4 personas, con equipaje..."></textarea>
-            </div>
-            
-            <button id="sendWhatsApp" class="btn-send" disabled>
-                📤 Enviar por WhatsApp
-            </button>
         </div>
     </div>
+
+    <!-- Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
     <script>
         // Año actual automático
@@ -1216,37 +1322,30 @@
             let currentIndex = 0;
             const totalSlides = slides.length;
             
-            // Función para actualizar la posición del carrusel
             function updateCarousel() {
-                // Mover el track al slide actual
                 track.style.transform = `translateX(-${currentIndex * 100}%)`;
                 
-                // Actualizar indicadores
                 indicators.forEach((indicator, index) => {
                     indicator.classList.toggle('active', index === currentIndex);
                     indicator.setAttribute('aria-label', `Ir al slide ${index + 1}`);
                 });
             }
             
-            // Función para ir al slide específico
             function goToSlide(index) {
                 currentIndex = index;
                 updateCarousel();
             }
             
-            // Función para siguiente slide
             function nextSlide() {
                 currentIndex = (currentIndex + 1) % totalSlides;
                 updateCarousel();
             }
             
-            // Función para slide anterior
             function prevSlide() {
                 currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
                 updateCarousel();
             }
             
-            // Event listeners
             nextButton.addEventListener('click', nextSlide);
             prevButton.addEventListener('click', prevSlide);
             
@@ -1254,103 +1353,110 @@
                 indicator.addEventListener('click', () => goToSlide(index));
             });
             
-            // Navegación por teclado
             carousel.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowRight') nextSlide();
                 if (e.key === 'ArrowLeft') prevSlide();
             });
             
-            // Auto slide cada 5 segundos
             let autoSlide = setInterval(nextSlide, 5000);
             
-            // Pausar auto slide cuando el mouse está sobre el carrusel
             carousel.addEventListener('mouseenter', () => {
                 clearInterval(autoSlide);
             });
             
-            // Reanudar auto slide cuando el mouse sale del carrusel
             carousel.addEventListener('mouseleave', () => {
                 autoSlide = setInterval(nextSlide, 5000);
             });
             
-            // Inicializar
             updateCarousel();
         });
 
-        // WhatsApp con GPS - Funcionalidad mejorada con accesibilidad
+        // WhatsApp Modal - NUEVO SISTEMA MEJORADO
         document.addEventListener('DOMContentLoaded', function() {
+            // Elementos del modal
+            const taxiModal = new bootstrap.Modal(document.getElementById('taxiModalWhatsApp'));
             const whatsappBtn = document.getElementById('whatsappBtn');
-            const taxiModal = document.getElementById('taxiModal');
-            const closeModal = document.querySelector('.close-modal');
-            const getLocationBtn = document.getElementById('getLocationBtn');
-            const locationText = document.getElementById('locationText');
-            const locationStatus = document.getElementById('locationStatus');
-            const userMessage = document.getElementById('userMessage');
-            const sendWhatsApp = document.getElementById('sendWhatsApp');
+            const sendWhatsAppBtn = document.getElementById('sendWhatsAppBtn');
+            const refreshLocationBtn = document.getElementById('refreshLocationBtn');
+            const autoLocationBtn = document.getElementById('autoLocationBtn');
+            const manualLocationBtn = document.getElementById('manualLocationBtn');
+            const autoLocationSection = document.getElementById('autoLocationSection');
+            const manualLocationSection = document.getElementById('manualLocationSection');
+            const autoLocationText = document.getElementById('autoLocationText');
+            const autoLocationStatus = document.getElementById('autoLocationStatus');
             
+            // Campos del formulario
+            const userName = document.getElementById('userName');
+            const userPhone = document.getElementById('userPhone');
+            const serviceType = document.getElementById('serviceType');
+            const userMessage = document.getElementById('userMessage');
+            const manualAddress = document.getElementById('manualAddress');
+            
+            // Variables
             let userLocation = null;
-            let selectedService = 'Servicio Solicitado desde la Web';
-            const phoneNumber = '524427128200';
+            let addressText = '';
+            let useAutoLocation = true;
+            const phoneNumber = '524427128200'; // Número de Taxi Merced
+            
+            // Fallback para SVG
+            const whatsappSVG = document.getElementById('whatsappSVG');
+            if (!whatsappSVG || whatsappSVG.getBoundingClientRect().width === 0) {
+                document.querySelector('.whatsapp-btn svg').style.display = 'none';
+                document.querySelector('.whatsapp-btn .fa-whatsapp').style.display = 'block';
+            }
             
             // Abrir modal al hacer click en WhatsApp
             whatsappBtn.addEventListener('click', function() {
-                taxiModal.style.display = 'block';
-                getLocation(); // Obtener ubicación automáticamente al abrir
-                taxiModal.focus();
-            });
-            
-            // También abrir con Enter/Espacio
-            whatsappBtn.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    taxiModal.style.display = 'block';
-                    getLocation();
-                    taxiModal.focus();
+                taxiModal.show();
+                if (useAutoLocation) {
+                    getAutoLocation();
                 }
             });
             
-            // Cerrar modal
-            closeModal.addEventListener('click', function() {
-                taxiModal.style.display = 'none';
-                whatsappBtn.focus();
+            // Alternar entre ubicación automática y manual
+            autoLocationBtn.addEventListener('click', function() {
+                useAutoLocation = true;
+                autoLocationBtn.classList.add('active');
+                manualLocationBtn.classList.remove('active');
+                autoLocationSection.style.display = 'block';
+                manualLocationSection.style.display = 'none';
+                getAutoLocation();
             });
             
-            // Cerrar modal con tecla ESC
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape' && taxiModal.style.display === 'block') {
-                    taxiModal.style.display = 'none';
-                    whatsappBtn.focus();
-                }
+            manualLocationBtn.addEventListener('click', function() {
+                useAutoLocation = false;
+                manualLocationBtn.classList.add('active');
+                autoLocationBtn.classList.remove('active');
+                manualLocationSection.style.display = 'block';
+                autoLocationSection.style.display = 'none';
+                updateSendButton();
             });
             
-            // Cerrar modal al hacer click fuera
-            window.addEventListener('click', function(event) {
-                if (event.target === taxiModal) {
-                    taxiModal.style.display = 'none';
-                    whatsappBtn.focus();
-                }
-            });
+            // Actualizar ubicación automática
+            refreshLocationBtn.addEventListener('click', getAutoLocation);
             
-            // Obtener ubicación
-            function getLocation() {
-                locationText.textContent = 'Obteniendo ubicación...';
-                locationStatus.classList.remove('location-success', 'location-error');
-                sendWhatsApp.disabled = true;
+            // Obtener ubicación automática
+            function getAutoLocation() {
+                if (!useAutoLocation) return;
+                
+                autoLocationText.textContent = 'Obteniendo tu ubicación...';
+                autoLocationStatus.className = 'location-status';
+                sendWhatsAppBtn.disabled = true;
                 
                 if (!navigator.geolocation) {
-                    locationText.textContent = '❌ Geolocalización no soportada por tu navegador';
-                    locationStatus.classList.add('location-error');
+                    autoLocationText.textContent = '❌ Tu navegador no soporta geolocalización';
+                    autoLocationStatus.classList.add('error');
                     return;
                 }
                 
                 navigator.geolocation.getCurrentPosition(
-                    // Success
+                    // Éxito
                     function(position) {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
                         userLocation = { lat, lng };
                         
-                        // Obtener dirección usando reverse geocoding
+                        // Obtener dirección
                         getAddressFromCoordinates(lat, lng);
                     },
                     // Error
@@ -1359,7 +1465,7 @@
                         
                         switch(error.code) {
                             case error.PERMISSION_DENIED:
-                                errorMessage = '❌ Permiso de ubicación denegado. Por favor habilita la ubicación en tu navegador.';
+                                errorMessage = '❌ Permiso de ubicación denegado. Por favor habilita la ubicación en tu navegador o usa la opción manual.';
                                 break;
                             case error.POSITION_UNAVAILABLE:
                                 errorMessage = '❌ Información de ubicación no disponible.';
@@ -1369,170 +1475,223 @@
                                 break;
                         }
                         
-                        locationText.textContent = errorMessage;
-                        locationStatus.classList.add('location-error');
+                        autoLocationText.textContent = errorMessage;
+                        autoLocationStatus.classList.add('error');
                         updateSendButton();
                     },
-                    // Options
+                    // Opciones
                     {
                         enableHighAccuracy: true,
                         timeout: 10000,
-                        maximumAge: 60000
+                        maximumAge: 0
                     }
                 );
             }
             
-            // Obtener dirección a partir de coordenadas - FORMATO COLOQUIAL MEXICANO
-function getAddressFromCoordinates(lat, lng) {
-    // Usar Nominatim (OpenStreetMap) para reverse geocoding gratuito
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&accept-language=es`)
-        .then(response => response.json())
-        .then(data => {
-            let direccionFormateada = '';
-            
-            if (data && data.address) {
-                const addr = data.address;
-                
-                // CONSTRUIR DIRECCIÓN EN FORMATO COLOQUIAL MEXICANO:
-                // "calle [nombre] no. [número] [ciudad] [estado]"
-                
-                // 1. Obtener la calle/avenida
-                let calle = '';
-                if (addr.road) {
-                    calle = addr.road;
-                    // Si no incluye "calle", "av.", etc., agregar "Calle "
-                    if (!/^(calle|avenida|av\.|av |blvd|boulevard|cerrada|cerr\.|privada|priv\.)/i.test(calle)) {
-                        calle = 'Calle ' + calle;
-                    }
-                }
-                
-                // 2. Agregar número si existe
-                if (addr.house_number) {
-                    calle += ` no. ${addr.house_number}`;
-                }
-                
-                // 3. Obtener ciudad (prioridad: city > town > suburb > village)
-                let ciudad = addr.city || addr.town || addr.suburb || addr.village || '';
-                
-                // 4. Obtener estado
-                let estado = addr.state || '';
-                
-                // 5. Construir dirección final en formato coloquial
-                if (calle) {
-                    direccionFormateada = calle;
-                    if (ciudad) {
-                        direccionFormateada += ` ${ciudad}`;
-                    }
-                    if (estado && !direccionFormateada.includes(estado)) {
-                        direccionFormateada += ` ${estado}`;
-                    }
-                }
+            // Obtener dirección a partir de coordenadas
+            function getAddressFromCoordinates(lat, lng) {
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&accept-language=es`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.display_name) {
+                            addressText = data.display_name;
+                            autoLocationText.textContent = `📍 ${addressText}`;
+                            autoLocationStatus.classList.add('success');
+                        } else {
+                            addressText = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                            autoLocationText.textContent = `📍 Ubicación: ${addressText}`;
+                            autoLocationStatus.classList.add('success');
+                        }
+                        updateSendButton();
+                    })
+                    .catch(error => {
+                        addressText = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                        autoLocationText.textContent = `📍 Ubicación: ${addressText}`;
+                        autoLocationStatus.classList.add('success');
+                        updateSendButton();
+                    });
             }
             
-            // Si no se pudo construir formato coloquial, usar display_name y formatearlo
-            if (!direccionFormateada || direccionFormateada.trim().length < 10) {
-                if (data && data.display_name) {
-                    direccionFormateada = formatearDireccionColoquial(data.display_name);
+            // Validar teléfono mexicano
+            function validateMexicanPhone(phone) {
+                // Limpiar el número
+                const cleanPhone = phone.replace(/\D/g, '');
+                
+                // Validar formatos:
+                // 1. +52 442 123 4567 → 524421234567 (12 dígitos)
+                // 2. 52 442 123 4567 → 524421234567 (12 dígitos)
+                // 3. 521 442 123 4567 → 5214421234567 (13 dígitos)
+                // 4. 442 123 4567 → 4421234567 (10 dígitos)
+                
+                if (cleanPhone.length === 10) {
+                    // Formato local: 4421234567
+                    return cleanPhone;
+                } else if (cleanPhone.length === 12 && (cleanPhone.startsWith('52'))) {
+                    // Formato internacional: 524421234567
+                    return cleanPhone;
+                } else if (cleanPhone.length === 13 && cleanPhone.startsWith('521')) {
+                    // Formato móvil: 5214421234567
+                    return cleanPhone;
+                }
+                
+                return null;
+            }
+            
+            // Validar formulario
+            function validateForm() {
+                let isValid = true;
+                
+                // Validar nombre
+                if (!userName.value.trim()) {
+                    userName.classList.add('is-invalid');
+                    isValid = false;
                 } else {
-                    direccionFormateada = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    userName.classList.remove('is-invalid');
                 }
+                
+                // Validar teléfono
+                const phoneValid = validateMexicanPhone(userPhone.value);
+                if (!phoneValid) {
+                    userPhone.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    userPhone.classList.remove('is-invalid');
+                }
+                
+                // Validar tipo de servicio
+                if (!serviceType.value) {
+                    serviceType.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    serviceType.classList.remove('is-invalid');
+                }
+                
+                // Validar ubicación
+                if (useAutoLocation) {
+                    if (!userLocation) {
+                        isValid = false;
+                    }
+                } else {
+                    if (!manualAddress.value.trim()) {
+                        manualAddress.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        manualAddress.classList.remove('is-invalid');
+                    }
+                }
+                
+                return isValid;
             }
-            
-            locationText.textContent = `📍 ${direccionFormateada}`;
-            locationStatus.classList.add('location-success');
-            updateSendButton();
-        })
-        .catch(error => {
-            // Si falla el reverse geocoding, mostrar coordenadas
-            locationText.textContent = `📍 Ubicación: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            locationStatus.classList.add('location-success');
-            updateSendButton();
-        });
-}
-
-// Función auxiliar: convertir dirección internacional a formato coloquial mexicano
-function formatearDireccionColoquial(direccionCompleta) {
-    if (!direccionCompleta) return '';
-    
-    
-    
-    return direccion;
-}
-            
-            // Botón para actualizar ubicación
-            getLocationBtn.addEventListener('click', getLocation);
             
             // Actualizar estado del botón de enviar
             function updateSendButton() {
-                sendWhatsApp.disabled = !userLocation;
-                sendWhatsApp.setAttribute('aria-disabled', !userLocation);
+                const isValid = validateForm();
+                sendWhatsAppBtn.disabled = !isValid;
             }
             
+            // Event listeners para validación en tiempo real
+            userName.addEventListener('input', updateSendButton);
+            userPhone.addEventListener('input', updateSendButton);
+            serviceType.addEventListener('change', updateSendButton);
+            userMessage.addEventListener('input', updateSendButton);
+            manualAddress.addEventListener('input', updateSendButton);
+            
             // Enviar mensaje por WhatsApp
-            sendWhatsApp.addEventListener('click', function() {
-                if (!userLocation || !selectedService) return;
-                
-                const lat = userLocation.lat;
-                const lng = userLocation.lng;
-                const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-                
-                let message = `¡Hola! Necesito un taxi \n\n`;
-                message += `*Servicio solicitado:* ${selectedService}\n`;
-                message += `*Mi ubicación:* ${locationText.textContent.replace('📍 ', '')}\n`;
-                message += `*Enlace de Google Maps:* ${mapsUrl}\n`;
-                
-                if (userMessage.value.trim()) {
-                    message += `*Mensaje del usuario:* ${userMessage.value.trim()}\n`;
+            sendWhatsAppBtn.addEventListener('click', function() {
+                if (!validateForm()) {
+                    return;
                 }
                 
-                message += `\n*Taxi Merced* - Servicio confiable desde hace 15 años`;
+                // Preparar datos
+                const phoneValid = validateMexicanPhone(userPhone.value);
+                const whatsappPhone = phoneValid.startsWith('52') ? phoneValid : '52' + phoneValid;
                 
-                // Codificar el mensaje para URL
+                // Determinar ubicación
+                let locationText = '';
+                let mapsUrl = '';
+                
+                if (useAutoLocation && userLocation) {
+                    locationText = addressText || `${userLocation.lat.toFixed(6)}, ${userLocation.lng.toFixed(6)}`;
+                    mapsUrl = `https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`;
+                } else if (!useAutoLocation && manualAddress.value.trim()) {
+                    locationText = manualAddress.value.trim();
+                    mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationText)}`;
+                }
+                
+                // Construir mensaje
+                let message = `¡Hola Taxi Merced! Necesito un servicio de taxi.\n\n`;
+                message += `*Información del cliente:*\n`;
+                message += `• Nombre: ${userName.value.trim()}\n`;
+                message += `• Teléfono: ${userPhone.value.trim()}\n\n`;
+                message += `*Detalles del servicio:*\n`;
+                message += `• Tipo: ${serviceType.value}\n`;
+                message += `• Ubicación: ${locationText}\n`;
+                message += `• Enlace a Google Maps: ${mapsUrl}\n`;
+                
+                if (userMessage.value.trim()) {
+                    message += `• Detalles adicionales: ${userMessage.value.trim()}\n`;
+                }
+                
+                message += `\n*Taxi Merced* - 15 años de servicio confiable`;
+                
+                // Codificar mensaje para URL
                 const encodedMessage = encodeURIComponent(message);
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                
+                // Determinar URL de WhatsApp
+                let whatsappUrl = '';
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                
+                if (isMobile && !isIOS) {
+                    // Android: abre app nativa
+                    whatsappUrl = `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
+                } else {
+                    // iOS y desktop: abre WhatsApp Web
+                    whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
+                }
                 
                 // Abrir WhatsApp
                 window.open(whatsappUrl, '_blank');
                 
-                // Cerrar modal
-                taxiModal.style.display = 'none';
-                whatsappBtn.focus();
-                
-                // Resetear formulario
-                resetForm();
+                // Cerrar modal después de un breve retraso
+                setTimeout(() => {
+                    taxiModal.hide();
+                    resetForm();
+                }, 500);
             });
             
-            // También enviar con Enter en textarea
-            userMessage.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey && userLocation) {
-                    e.preventDefault();
-                    sendWhatsApp.click();
-                }
-            });
-            
+            // Resetear formulario
             function resetForm() {
-                userLocation = null;
+                userName.value = '';
+                userPhone.value = '';
+                serviceType.value = '';
                 userMessage.value = '';
-                locationText.textContent = 'Obteniendo ubicación...';
-                locationStatus.classList.remove('location-success', 'location-error');
-                updateSendButton();
+                manualAddress.value = '';
+                
+                userLocation = null;
+                addressText = '';
+                
+                autoLocationText.textContent = 'Obteniendo tu ubicación...';
+                autoLocationStatus.className = 'location-status';
+                
+                userName.classList.remove('is-invalid');
+                userPhone.classList.remove('is-invalid');
+                serviceType.classList.remove('is-invalid');
+                manualAddress.classList.remove('is-invalid');
+                
+                sendWhatsAppBtn.disabled = true;
+                
+                // Volver a ubicación automática
+                useAutoLocation = true;
+                autoLocationBtn.classList.add('active');
+                manualLocationBtn.classList.remove('active');
+                autoLocationSection.style.display = 'block';
+                manualLocationSection.style.display = 'none';
             }
             
-            // Actualizar botón cuando se escribe mensaje
-            userMessage.addEventListener('input', updateSendButton);
-            
             // Inicializar
-            updateSendButton();
+            getAutoLocation();
         });
-
-        // Mejorar rendimiento en móviles
-        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js').catch(function(error) {
-                    console.log('ServiceWorker registration failed:', error);
-                });
-            });
-        }
     </script>
 </body>
 </html>
