@@ -1118,6 +1118,7 @@
     <section class="section" id="contacto">
         <div class="container">
             <h2 class="section-title">Nuestra Ubicación</h2>
+            <h3 class="section-title">Calle Beta No.21, Col. Romero de Terreros, Coyoacán, Ciudad de México</h3>
             <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1882.2881654136556!2d-99.17040856171164!3d19.34418222626885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2smx!4v1764462915364!5m2!1ses!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -1186,7 +1187,7 @@
         <i class="fab fa-whatsapp" style="display: none;"></i>
     </button>
 
-    <!-- Modal WhatsApp NUEVO Y MEJORADO -->
+    <!-- Modal WhatsApp CORREGIDO -->
     <div class="modal fade modal-taxi" id="taxiModalWhatsApp" tabindex="-1" aria-labelledby="taxiModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -1213,9 +1214,24 @@
                         </div>
                     </div>
                     
+                    <!-- Tipo de servicio - AÑADIDO -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label for="serviceType" class="form-label">Tipo de servicio *</label>
+                            <select class="form-select form-control-lg" id="serviceType" required>
+                                <option value="" selected disabled>Selecciona un tipo de servicio</option>
+                                <option value="Servicio Regular (Local o foráneo)">Servicio Regular (Local o foráneo)</option>
+                                <option value="Envíos a domicilio">Envíos a domicilio</option>
+                                <option value="Viaje al Aeropuerto">Viaje al Aeropuerto</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                            <div class="invalid-feedback">Por favor selecciona un tipo de servicio.</div>
+                        </div>
+                    </div>
+                    
                     <!-- Sistema dual de ubicación -->
                     <div class="location-options">
-                        <h5 class="mb-3"><i class="fas fa-map-marker-alt me-2"></i>¿Cómo deseas compartir tu ubicación?</h5>
+                        <h5 class="mb-3"><i class="fas fa-map-marker-alt me-2"></i>¿Cómo deseas compartir tu ubicación? *</h5>
                         
                         <div class="location-toggle mb-4">
                             <button type="button" class="location-toggle-btn active" id="autoLocationBtn">
@@ -1235,17 +1251,18 @@
                             <button type="button" class="btn btn-primary mt-2" id="refreshLocationBtn">
                                 <i class="fas fa-sync-alt me-1"></i> Actualizar Ubicación
                             </button>
+                            <input type="hidden" id="autoLocationValid" value="false">
                         </div>
                         
                         <!-- Ubicación manual -->
                         <div id="manualLocationSection" style="display: none;">
-                            <label for="manualAddress" class="form-label">Escribe tu dirección completa:</label>
+                            <label for="manualAddress" class="form-label">Escribe tu dirección completa: *</label>
                             <input type="text" class="form-control mb-2" id="manualAddress" placeholder="Ej: Calle Beta No.21, Col. Romero de Terreros, Coyoacán, CDMX">
+                            <div class="invalid-feedback" id="manualAddressFeedback" style="display: none;">Por favor ingresa tu dirección.</div>
                             <small class="text-muted">Esta dirección se incluirá en el mensaje a WhatsApp.</small>
+                            <input type="hidden" id="manualLocationValid" value="false">
                         </div>
                     </div>
-                    
-                    
                     
                     <!-- Mensaje personalizado -->
                     <div class="mb-4">
@@ -1360,7 +1377,7 @@
             updateCarousel();
         });
 
-        // WhatsApp Modal - NUEVO SISTEMA MEJORADO (CORREGIDO)
+        // WhatsApp Modal - VERSIÓN CORREGIDA Y FUNCIONAL
         document.addEventListener('DOMContentLoaded', function() {
             // Elementos del modal
             const taxiModal = new bootstrap.Modal(document.getElementById('taxiModalWhatsApp'));
@@ -1373,6 +1390,8 @@
             const manualLocationSection = document.getElementById('manualLocationSection');
             const autoLocationText = document.getElementById('autoLocationText');
             const autoLocationStatus = document.getElementById('autoLocationStatus');
+            const autoLocationValid = document.getElementById('autoLocationValid');
+            const manualLocationValid = document.getElementById('manualLocationValid');
             
             // Campos del formulario
             const userName = document.getElementById('userName');
@@ -1380,6 +1399,7 @@
             const serviceType = document.getElementById('serviceType');
             const userMessage = document.getElementById('userMessage');
             const manualAddress = document.getElementById('manualAddress');
+            const manualAddressFeedback = document.getElementById('manualAddressFeedback');
             
             // Variables
             let userLocation = null;
@@ -1410,6 +1430,7 @@
                 autoLocationSection.style.display = 'block';
                 manualLocationSection.style.display = 'none';
                 getAutoLocation();
+                updateSendButton();
             });
             
             manualLocationBtn.addEventListener('click', function() {
@@ -1430,11 +1451,12 @@
                 
                 autoLocationText.textContent = 'Obteniendo tu ubicación...';
                 autoLocationStatus.className = 'location-status';
-                sendWhatsAppBtn.disabled = true;
+                autoLocationValid.value = 'false';
                 
                 if (!navigator.geolocation) {
                     autoLocationText.textContent = '❌ Tu navegador no soporta geolocalización';
                     autoLocationStatus.classList.add('error');
+                    updateSendButton();
                     return;
                 }
                 
@@ -1466,6 +1488,7 @@
                         
                         autoLocationText.textContent = errorMessage;
                         autoLocationStatus.classList.add('error');
+                        autoLocationValid.value = 'false';
                         updateSendButton();
                     },
                     // Opciones
@@ -1486,10 +1509,12 @@
                             addressText = data.display_name;
                             autoLocationText.textContent = `📍 ${addressText}`;
                             autoLocationStatus.classList.add('success');
+                            autoLocationValid.value = 'true';
                         } else {
                             addressText = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
                             autoLocationText.textContent = `📍 Ubicación: ${addressText}`;
                             autoLocationStatus.classList.add('success');
+                            autoLocationValid.value = 'true';
                         }
                         updateSendButton();
                     })
@@ -1497,6 +1522,7 @@
                         addressText = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
                         autoLocationText.textContent = `📍 Ubicación: ${addressText}`;
                         autoLocationStatus.classList.add('success');
+                        autoLocationValid.value = 'true';
                         updateSendButton();
                     });
             }
@@ -1545,7 +1571,7 @@
                     userPhone.classList.remove('is-invalid');
                 }
                 
-                // Validar tipo de servicio
+                // Validar tipo de servicio (AÑADIDO)
                 if (!serviceType.value) {
                     serviceType.classList.add('is-invalid');
                     isValid = false;
@@ -1553,17 +1579,20 @@
                     serviceType.classList.remove('is-invalid');
                 }
                 
-                // Validar ubicación
+                // Validar ubicación (CORREGIDO)
                 if (useAutoLocation) {
-                    if (!userLocation) {
+                    if (autoLocationValid.value !== 'true') {
                         isValid = false;
                     }
                 } else {
                     if (!manualAddress.value.trim()) {
                         manualAddress.classList.add('is-invalid');
+                        manualAddressFeedback.style.display = 'block';
                         isValid = false;
                     } else {
                         manualAddress.classList.remove('is-invalid');
+                        manualAddressFeedback.style.display = 'none';
+                        manualLocationValid.value = 'true';
                     }
                 }
                 
@@ -1661,11 +1690,14 @@
                 
                 autoLocationText.textContent = 'Obteniendo tu ubicación...';
                 autoLocationStatus.className = 'location-status';
+                autoLocationValid.value = 'false';
+                manualLocationValid.value = 'false';
                 
                 userName.classList.remove('is-invalid');
                 userPhone.classList.remove('is-invalid');
                 serviceType.classList.remove('is-invalid');
                 manualAddress.classList.remove('is-invalid');
+                manualAddressFeedback.style.display = 'none';
                 
                 sendWhatsAppBtn.disabled = true;
                 
