@@ -1645,8 +1645,10 @@
                 message += `• Enlace a Google Maps: ${mapsUrl}\n`;
                 
                 if (userMessage.value.trim()) {
-                    message += `• Detalles adicionales: ${userMessage.value.trim()}\n`;
-                }
+                    message += `=================\n`;
+                    message += `*Detalles adicionales del servicio solicitado:*\n`;
+                    message += `*• ${userMessage.value.trim()}*\n`;
+                }  
                 
                 message += `\n*Taxi Merced* - 15 años de servicio confiable`;
                 
